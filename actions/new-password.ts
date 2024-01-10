@@ -54,6 +54,6 @@ export const newPassword = async (values: z.infer<typeof NewPasswordSchema>, tok
         where:{id: existingToken.id}
     });
 
-    return {success: "password updated"};
+    return {success: "password updated"}
    
 }
