@@ -139,7 +139,7 @@ const LoginForm = () => {
             </>
             )}
           </div>
-          <FormError message={error || uriError ? "" : urlError} />
+          <FormError message={error || uriError ? error : urlError} />
           <FormSuccess message={success} />
           <Button disabled={isPending} className="w-full" type="submit">
             {showTwoFactor ? "Confirm":"Login"}
