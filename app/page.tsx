@@ -13,7 +13,7 @@ export default function Home() {
         </p>
 
         <div>
-          <LoginButton>
+          <LoginButton  asChild>
             <Button size="lg" variant="secondary">Login</Button>
           </LoginButton>
          

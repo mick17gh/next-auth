@@ -24,6 +24,8 @@ import Link from "next/link";
 
 const LoginForm = () => {
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
   const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already exist with another provider" : ""
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
@@ -37,16 +39,29 @@ const LoginForm = () => {
       password: "",
     },
   });
+  
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
     startTransition(()=>{
-      login(values)
+      login(values, callbackUrl)
       .then((data)=>{
-        setError(data?.error);
-        setSuccess(data?.success);
-      })
+        if(data?.error){
+          form.reset();
+          setError(data?.error);
+        }
+
+        if(data?.success){
+          form.reset();
+          setSuccess(data?.success);
+        }
+
+        if(data?.twoFactor){
+          setShowTwoFactor(true);
+        }
+
+      }).catch(()=> setError("something went wrong")) 
     })
   }
 
@@ -60,6 +75,27 @@ const LoginForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
+            {showTwoFactor && (
+              <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Two Factor Code</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      {...field}
+                      placeholder="123456"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            )}
+            { !showTwoFactor && (
+              <>
             <FormField
               control={form.control}
               name="email"
@@ -95,10 +131,15 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
+            </>
+            )}
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button disabled={isPending} className="w-full" type="submit">Login</Button>
+          <Button disabled={isPending} className="w-full" type="submit">
+            {showTwoFactor ? "Confirm":"Login"}
+            
+            </Button>
         </form>
       </Form>
     </CardWrapper>
