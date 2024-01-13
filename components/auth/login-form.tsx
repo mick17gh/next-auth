@@ -22,15 +22,17 @@ import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
+
 const LoginForm = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const [showTwoFactor, setShowTwoFactor] = useState(false);
-  const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already exist with another provider" : ""
+  const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already exist with another provider" : "";
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
+  const [uriError, setUriError] = useState<boolean>(false);
   const [success, setSuccess] = useState<string | undefined>("");
-
+  
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,6 +44,9 @@ const LoginForm = () => {
   
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    if(urlError){
+      setUriError(true)
+    }
     setError("");
     setSuccess("");
     startTransition(()=>{
@@ -134,7 +139,7 @@ const LoginForm = () => {
             </>
             )}
           </div>
-          <FormError message={error || urlError} />
+          <FormError message={error || uriError ? "" : urlError} />
           <FormSuccess message={success} />
           <Button disabled={isPending} className="w-full" type="submit">
             {showTwoFactor ? "Confirm":"Login"}
