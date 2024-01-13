@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select";
 import { UserRole } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
+import { Loader } from "@/components/loader";
 
 const SettingsPage = () => {
     const user = useCurrentUser();
@@ -231,8 +232,9 @@ const SettingsPage = () => {
                     <FormError message={error} />
                     <FormSuccess message={success} />
 
-                    <Button type="submit" disabled={isPending}>
-                        Save Changes
+                    <Button type="submit" className="w-[150px]" disabled={isPending}>
+                    {isPending ? <Loader /> : "Save Changes"}
+                        
                     </Button>
 
                     </form>

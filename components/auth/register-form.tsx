@@ -19,6 +19,7 @@ import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
 import { register } from "@/actions/register";
+import { Loader } from "../loader";
 
 const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -116,7 +117,11 @@ const RegisterForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button disabled={isPending} className="w-full" type="submit">Register</Button>
+          <Button disabled={isPending} className="w-full" type="submit">
+          {isPending ? <Loader /> : "Register"}
+            
+            
+            </Button>
         </form>
       </Form>
     </CardWrapper>

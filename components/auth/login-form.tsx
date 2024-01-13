@@ -21,6 +21,7 @@ import FormSuccess from "../form-success";
 import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Loader } from "../loader";
 
 
 const LoginForm = () => {
@@ -142,7 +143,12 @@ const LoginForm = () => {
           <FormError message={error || uriError ? error : urlError} />
           <FormSuccess message={success} />
           <Button disabled={isPending} className="w-full" type="submit">
-            {showTwoFactor ? "Confirm":"Login"}
+           {isPending ? <Loader /> : 
+            <>
+              {showTwoFactor ? "Confirm":"Login"}
+            </>
+           }
+            
             
             </Button>
         </form>
