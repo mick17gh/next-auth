@@ -14,12 +14,12 @@ const Header = ({
     label
 }:HeaderProps) => {
     return ( 
-        <div className="w-full flex flex-col gap-y-4 items-center">
+        <div className="w-full flex flex-col gap-y-3 items-center">
             <h1 className={cn(
                 "text-3xl font-semibold",
                 font.className
             )}>
-                Auth
+                Gallery Streaks
             </h1>
 
             <p className="text-muted-foreground text-sm">

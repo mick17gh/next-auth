@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Settings2Icon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import {
     Form,
@@ -79,11 +79,18 @@ const SettingsPage = () => {
     }
    
     return ( 
+        <div className="p-6 bg-slate-100 ">
+
+        
         <Card className="w-[600px]">
             <CardHeader>
-                <p className="text-2xl font-semibold text-center">
-                    ⚙️ Settings
-                </p>
+                <div className="flex items-center space-x-2">
+                    <Settings2Icon />
+                    <p className="text-xl font-medium text-slate-600">
+                    Settings
+                    </p>
+                </div>
+                
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -241,6 +248,7 @@ const SettingsPage = () => {
                 </Form>
             </CardContent>
         </Card>
+        </div>
      );
 }
  
